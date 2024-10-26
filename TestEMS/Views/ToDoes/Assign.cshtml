@@ -1,0 +1,64 @@
+﻿@model TestEMS.Models.ToDo
+
+@{
+    ViewData["Title"] = "Assign ToDo";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ToDo</h4>
+    <hr />
+    <form asp-action="Assign">
+        <input type="hidden" asp-for="ToDoId" />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Project)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Project.ProjectName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ActivityType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ActivityType.ActivityName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PageName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PageName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Priority)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Priority)
+            </dd>
+        </dl>
+        <div class="form-group">
+            <label asp-for="AssignedTo" class="control-label">Assign To</label>
+            <select asp-for="AssignedTo" class="form-select" asp-items="@(new SelectList(ViewBag.EmployeeList, "Id", "Name"))" style="width:200px;"></select>
+            <span asp-validation-for="AssignedTo" class="text-danger"></span>
+        </div>
+        <div>
+            <input type="submit" value="Assign" class="btn btn-primary" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
+<div>
+</div>
