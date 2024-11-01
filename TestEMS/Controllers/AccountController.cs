@@ -19,16 +19,15 @@ namespace TestEMS.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(string Username, string Password)
         {
             if (ModelState.IsValid)
             {
-
-                var employee = await _context.EmployeeData.FirstOrDefaultAsync(e => e.UserName == username);
+                var employee = await _context.EmployeeData.FirstOrDefaultAsync(e => e.UserName == Username);
                 if (employee != null)
                 {
                     PasswordService passwordService = new PasswordService();
-                    bool isPasswordValid = passwordService.VerifyPassword(employee, password, employee.PasswordHash);
+                    bool isPasswordValid = passwordService.VerifyPassword(employee, Password, employee.PasswordHash);
                     if (isPasswordValid)
                     {
                         // Login successful, store employee details in session

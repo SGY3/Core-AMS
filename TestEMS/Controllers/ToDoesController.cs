@@ -2,28 +2,51 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestEMS.Data;
+using TestEMS.Filters;
 using TestEMS.Models;
+using TestEMS.Utilities;
 
 namespace TestEMS.Controllers
 {
+    [SessionRequired]
     public class ToDoesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly Utility _utility;
 
-        public ToDoesController(ApplicationDbContext context)
+        public ToDoesController(ApplicationDbContext context, Utility utility)
         {
             _context = context;
+            _utility = utility;
         }
 
         // GET: ToDoes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ToDo.Include(t => t.ActivityType).Include(t => t.Project).Where(t => t.AssignedTo == null);
+            //var todos = await _context.ToDo.Select(t => new
+            //{
+            //    t.ToDoId,
+            //    t.Title,
+            //    t.Description,
+            //    ProjectName = t.Project.ProjectName,
+            //    ActivityName = t.ActivityType.ActivityName,
+            //    t.PageName,
+            //    CreatedByName = t.AddedByEmployeeData.Name,
+            //    AssignToName = t.AssignedByEmployeeData.Name
+            //}).ToListAsync();
+            //return View(todos);
+            var applicationDbContext = _context.ToDo
+                .Include(t => t.ActivityType)
+                .Include(t => t.Project)
+                .Include(t => t.AddedByEmployeeData)
+                .Include(t => t.AssignedByEmployeeData)
+                .Where(t => t.AssignedTo == null);
             return View(await applicationDbContext.ToListAsync());
+
         }
 
         // GET: ToDoes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -63,11 +86,12 @@ namespace TestEMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,ProjectId,ActivityTypeId,PageName,Priority")] ToDo toDo)
+        public async Task<IActionResult> Create([Bind("ToDoId,Title,Description,ProjectId,ActivityTypeId,PageName,Priority")] ToDo toDo)
         {
             if (ModelState.IsValid)
             {
-                toDo.CreatedBy = HttpContext.Session.GetString("Id");
+                toDo.ToDoId = await _utility.GenerateToDoID();
+                toDo.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("Id"));
                 _context.Add(toDo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -112,7 +136,7 @@ namespace TestEMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ToDoId,Title,Description,ProjectId,ActivityTypeId,PageName,Priority")] ToDo toDo)
+        public async Task<IActionResult> Edit(string id, [Bind("ToDoId,Title,Description,ProjectId,ActivityTypeId,PageName,Priority")] ToDo toDo)
         {
             if (id != toDo.ToDoId)
             {
@@ -123,7 +147,7 @@ namespace TestEMS.Controllers
             {
                 try
                 {
-                    toDo.CreatedBy = "Admin";
+                    toDo.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString("Id"));
                     _context.Update(toDo);
                     await _context.SaveChangesAsync();
                 }
@@ -146,7 +170,7 @@ namespace TestEMS.Controllers
         }
 
         // GET: ToDoes/Assing/5
-        public async Task<IActionResult> Assign(int? id)
+        public async Task<IActionResult> Assign(string? id)
         {
             if (id == null)
             {
@@ -164,12 +188,12 @@ namespace TestEMS.Controllers
             ViewBag.EmployeeList = _context.EmployeeData.ToList();
             return View(toDo);
         }
-        // POST: ToDoes/Edit/5
+        // POST: ToDoes/Assign/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Assign")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignConfirmed(int id, [Bind("ToDoId,AssignedTo")] ToDo toDo)
+        public async Task<IActionResult> AssignConfirmed(string id, [Bind("ToDoId,AssignedTo")] ToDo toDo)
         {
             if (id != toDo.ToDoId)
             {
@@ -185,12 +209,27 @@ namespace TestEMS.Controllers
             // Assign the ToDo to the selected employee
             toDoData.AssignedTo = toDo.AssignedTo;
 
+            MyActivity myActivity = new MyActivity();
+
+            myActivity.ActivityId = await _utility.GenerateActivityID();
+            myActivity.ToDoId = toDoData.ToDoId;
+            myActivity.ActivityTitle = toDoData.Title;
+            myActivity.ActivityDescription = toDoData.Description;
+            myActivity.ProjectId = toDoData.ProjectId;
+            myActivity.ActivityTypeId = toDoData.ActivityTypeId;
+            myActivity.PageName = toDoData.PageName;
+            myActivity.Priority = toDoData.Priority;
+            myActivity.AssignedTo = toDoData.AssignedTo;
+            myActivity.AssignedBy = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            myActivity.AssignedDate = DateTime.Now;
+
+            _context.MyActivity.Add(myActivity);
             _context.ToDo.Update(toDoData);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
         // GET: ToDoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -224,7 +263,7 @@ namespace TestEMS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ToDoExists(int id)
+        private bool ToDoExists(string id)
         {
             return _context.ToDo.Any(e => e.ToDoId == id);
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestEMS.Data;
 
@@ -11,9 +12,11 @@ using TestEMS.Data;
 namespace TestEMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101104846_MoreToDoRelation")]
+    partial class MoreToDoRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,57 +87,6 @@ namespace TestEMS.Migrations
                     b.ToTable("EmployeeData");
                 });
 
-            modelBuilder.Entity("TestEMS.Models.MyActivity", b =>
-                {
-                    b.Property<string>("ActivityId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ActivityDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ActivityTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ActivityTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AssignedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("AssignedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("AssignedTo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ToDoId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ActivityId");
-
-                    b.HasIndex("ActivityTypeId");
-
-                    b.HasIndex("AssignedBy");
-
-                    b.HasIndex("AssignedTo");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("MyActivity");
-                });
-
             modelBuilder.Entity("TestEMS.Models.Project", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -158,8 +110,11 @@ namespace TestEMS.Migrations
 
             modelBuilder.Entity("TestEMS.Models.ToDo", b =>
                 {
-                    b.Property<string>("ToDoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ToDoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ToDoId"));
 
                     b.Property<int>("ActivityTypeId")
                         .HasColumnType("int");
@@ -199,37 +154,6 @@ namespace TestEMS.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ToDo");
-                });
-
-            modelBuilder.Entity("TestEMS.Models.MyActivity", b =>
-                {
-                    b.HasOne("TestEMS.Models.ActivityTypes", "ActivityType")
-                        .WithMany()
-                        .HasForeignKey("ActivityTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TestEMS.Models.EmployeeData", "AssignedByEmployeeData")
-                        .WithMany()
-                        .HasForeignKey("AssignedBy");
-
-                    b.HasOne("TestEMS.Models.EmployeeData", "AssignedToEmployeeData")
-                        .WithMany()
-                        .HasForeignKey("AssignedTo");
-
-                    b.HasOne("TestEMS.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActivityType");
-
-                    b.Navigation("AssignedByEmployeeData");
-
-                    b.Navigation("AssignedToEmployeeData");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("TestEMS.Models.ToDo", b =>

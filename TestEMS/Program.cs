@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TestEMS.Data;
+using TestEMS.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // Make the cookie HTTP only
     options.Cookie.IsEssential = true; // Make the cookie essential for the application
 });
+// Register the Utility class
+builder.Services.AddScoped<Utility>();
 
 
 var app = builder.Build();

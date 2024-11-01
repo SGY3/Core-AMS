@@ -62,10 +62,10 @@
                     @Html.DisplayFor(modelItem => item.Priority)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                    @Html.DisplayFor(modelItem => item.AddedByEmployeeData.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AssignedTo)
+                    @Html.DisplayFor(modelItem => item.AssignedByEmployeeData.Name)
                 </td>
                 <td>
                     <a asp-action="Assign" asp-route-id="@item.ToDoId">Assign</a> |

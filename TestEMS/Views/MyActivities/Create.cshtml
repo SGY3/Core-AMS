@@ -1,0 +1,79 @@
+﻿@model TestEMS.Models.MyActivity
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>MyActivity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ActivityId" class="control-label"></label>
+                <input asp-for="ActivityId" class="form-control" />
+                <span asp-validation-for="ActivityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToDoId" class="control-label"></label>
+                <input asp-for="ToDoId" class="form-control" />
+                <span asp-validation-for="ToDoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityTitle" class="control-label"></label>
+                <input asp-for="ActivityTitle" class="form-control" />
+                <span asp-validation-for="ActivityTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityDescription" class="control-label"></label>
+                <input asp-for="ActivityDescription" class="form-control" />
+                <span asp-validation-for="ActivityDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectId" class="control-label"></label>
+                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityTypeId" class="control-label"></label>
+                <select asp-for="ActivityTypeId" class ="form-control" asp-items="ViewBag.ActivityTypeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PageName" class="control-label"></label>
+                <input asp-for="PageName" class="form-control" />
+                <span asp-validation-for="PageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Priority" class="control-label"></label>
+                <input asp-for="Priority" class="form-control" />
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedTo" class="control-label"></label>
+                <select asp-for="AssignedTo" class ="form-control" asp-items="ViewBag.AssignedTo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedBy" class="control-label"></label>
+                <select asp-for="AssignedBy" class ="form-control" asp-items="ViewBag.AssignedBy"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedDate" class="control-label"></label>
+                <input asp-for="AssignedDate" class="form-control" />
+                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

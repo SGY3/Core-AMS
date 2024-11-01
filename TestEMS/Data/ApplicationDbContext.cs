@@ -13,5 +13,6 @@ namespace TestEMS.Data
         public DbSet<Project> Project { get; set; } = default!;
         public DbSet<EmployeeData> EmployeeData { get; set; } = default!;
         public DbSet<ToDo> ToDo { get; set; } = default!;
+        public DbSet<TestEMS.Models.MyActivity> MyActivity { get; set; } = default!;
     }
 }
