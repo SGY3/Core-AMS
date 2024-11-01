@@ -6,9 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set timeout as needed
+    options.Cookie.HttpOnly = true; // Make the cookie HTTP only
+    options.Cookie.IsEssential = true; // Make the cookie essential for the application
+});
+
 
 var app = builder.Build();
 
+// Use session middleware
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

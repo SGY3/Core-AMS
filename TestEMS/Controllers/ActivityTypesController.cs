@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestEMS.Data;
+using TestEMS.Filters;
 using TestEMS.Models;
 
 namespace TestEMS.Controllers
 {
+    [SessionRequired]
     public class ActivityTypesController : Controller
     {
         private readonly ApplicationDbContext _context;

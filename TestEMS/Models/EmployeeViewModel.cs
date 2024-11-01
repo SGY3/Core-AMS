@@ -2,7 +2,7 @@
 
 namespace TestEMS.Models
 {
-    public class EmployeeData
+    public class EmployeeViewModel
     {
         public int Id { get; set; }
         [Required]
@@ -13,9 +13,6 @@ namespace TestEMS.Models
         public string Phone { get; set; }
         [Display(Name = "User Name")]
         public string UserName { get; set; }
-        [Required]
-        [Display(Name = "Password")]
-        public string PasswordHash { get; set; }
         [Display(Name = "Active")]
         public string IsActive { get; set; }
     }

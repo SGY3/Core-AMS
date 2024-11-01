@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestEMS.Data;
 using TestEMS.Models;
+using TestEMS.Services;
 
 namespace TestEMS.Controllers
 {
@@ -46,6 +47,11 @@ namespace TestEMS.Controllers
         // GET: EmployeeDatas/Create
         public IActionResult Create()
         {
+            ViewBag.IsActiveList = new SelectList(new[]
+            {
+                new { Value = "Y", Text = "Yes" },
+                new { Value = "N", Text = "No" }
+            }, "Value", "Text");
             return View();
         }
 
@@ -54,10 +60,12 @@ namespace TestEMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EmployeeId,Name,Email,Phone,Password")] EmployeeData employeeData)
+        public async Task<IActionResult> Create([Bind("Id,EmployeeId,Name,Email,Phone,UserName,PasswordHash,IsActive")] EmployeeData employeeData)
         {
             if (ModelState.IsValid)
             {
+                PasswordService passwordService = new PasswordService();
+                employeeData.PasswordHash = passwordService.HashPassword(employeeData, employeeData.PasswordHash);
                 _context.Add(employeeData);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,7 +86,21 @@ namespace TestEMS.Controllers
             {
                 return NotFound();
             }
-            return View(employeeData);
+            var empViewModel = new EmployeeViewModel
+            {
+                Id = employeeData.Id,
+                EmployeeId = employeeData.EmployeeId,
+                Name = employeeData.Name,
+                Phone = employeeData.Phone,
+                Email = employeeData.Email,
+                UserName = employeeData.UserName
+            };
+            ViewBag.IsActiveList = new SelectList(new[]
+            {
+                new { Value = "Y", Text = "Yes" },
+                new { Value = "N", Text = "No" }
+            }, "Value", "Text", employeeData.IsActive);
+            return View(empViewModel);
         }
 
         // POST: EmployeeDatas/Edit/5
@@ -86,7 +108,7 @@ namespace TestEMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmployeeId,Name,Email,Phone,Password")] EmployeeData employeeData)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EmployeeId,Name,Email,Phone,UserName,IsActive")] EmployeeViewModel employeeData)
         {
             if (id != employeeData.Id)
             {
@@ -97,7 +119,18 @@ namespace TestEMS.Controllers
             {
                 try
                 {
-                    _context.Update(employeeData);
+                    var existingEmployee = await _context.EmployeeData.FindAsync(employeeData.Id);
+                    if (existingEmployee == null)
+                    {
+                        return NotFound();
+                    }
+                    existingEmployee.EmployeeId = employeeData.EmployeeId;
+                    existingEmployee.Name = employeeData.Name;
+                    existingEmployee.Phone = employeeData.Phone;
+                    existingEmployee.Email = employeeData.Email;
+                    existingEmployee.UserName = employeeData.UserName;
+                    existingEmployee.IsActive = employeeData.IsActive;
+                    _context.Update(existingEmployee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -113,6 +146,12 @@ namespace TestEMS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.IsActiveList = new SelectList(new[]
+            {
+                new { Value = "Y", Text = "Yes" },
+                new { Value = "N", Text = "No" }
+            }, "Value", "Text", employeeData.IsActive);
             return View(employeeData);
         }
 

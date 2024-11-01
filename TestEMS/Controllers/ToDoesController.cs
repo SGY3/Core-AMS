@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestEMS.Data;
@@ -71,7 +67,7 @@ namespace TestEMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                toDo.CreatedBy = "Admin";
+                toDo.CreatedBy = HttpContext.Session.GetString("Id");
                 _context.Add(toDo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
