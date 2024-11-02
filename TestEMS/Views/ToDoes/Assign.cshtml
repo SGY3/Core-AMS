@@ -13,6 +13,12 @@
         <input type="hidden" asp-for="ToDoId" />
         <dl class="row">
             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ToDoId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ToDoId)
+            </dd>
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Title)
             </dt>
             <dd class="col-sm-10">
@@ -48,11 +54,21 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Priority)
             </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AddedByEmployeeData.Name)
+            </dd>
         </dl>
-        <div class="form-group">
-            <label asp-for="AssignedTo" class="control-label">Assign To</label>
-            <select asp-for="AssignedTo" class="form-select" asp-items="@(new SelectList(ViewBag.EmployeeList, "Id", "Name"))" style="width:200px;"></select>
-            <span asp-validation-for="AssignedTo" class="text-danger"></span>
+        <div class="row">
+            <div class="col-sm-2">
+                <label asp-for="AssignedTo" class="control-label fw-bold">Assign To</label>
+            </div>
+            <div class="col-sm-4"> 
+                <select asp-for="AssignedTo" class="form-select" asp-items="@(new SelectList(ViewBag.EmployeeList, "Id", "Name"))" style="width:200px;"></select>
+                <span asp-validation-for="AssignedTo" class="text-danger"></span>
+            </div>
         </div>
         <div>
             <input type="submit" value="Assign" class="btn btn-primary" /> |

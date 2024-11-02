@@ -9,75 +9,84 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ToDoId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PageName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Priority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssignedByEmployeeData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssignedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ToDoId)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.ActivityTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.ProjectName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityType.ActivityName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PageName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.AssignedByEmployeeData.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssignedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ActivityId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ActivityId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ActivityId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ToDoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Project)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PageName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Priority)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AssignedByEmployeeData)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AssignedDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ToDoId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityType.ActivityName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PageName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedByEmployeeData.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedDate)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ActivityId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ActivityId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ActivityId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

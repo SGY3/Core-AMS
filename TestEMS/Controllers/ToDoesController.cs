@@ -56,6 +56,9 @@ namespace TestEMS.Controllers
             var toDo = await _context.ToDo
                 .Include(t => t.ActivityType)
                 .Include(t => t.Project)
+                .Include(t => t.AddedByEmployeeData)
+                .Include(t => t.AssignedByEmployeeData)
+                .Where(t => t.AssignedTo == null)
                 .FirstOrDefaultAsync(m => m.ToDoId == id);
             if (toDo == null)
             {
@@ -108,7 +111,7 @@ namespace TestEMS.Controllers
         }
 
         // GET: ToDoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
@@ -180,6 +183,9 @@ namespace TestEMS.Controllers
             var toDo = await _context.ToDo
                 .Include(t => t.ActivityType)
                 .Include(t => t.Project)
+                .Include(t => t.AddedByEmployeeData)
+                .Include(t => t.AssignedByEmployeeData)
+                .Where(t => t.AssignedTo == null)
                 .FirstOrDefaultAsync(m => m.ToDoId == id);
             if (toDo == null)
             {
@@ -239,6 +245,9 @@ namespace TestEMS.Controllers
             var toDo = await _context.ToDo
                 .Include(t => t.ActivityType)
                 .Include(t => t.Project)
+                .Include(t => t.AddedByEmployeeData)
+                .Include(t => t.AssignedByEmployeeData)
+                .Where(t => t.AssignedTo == null)
                 .FirstOrDefaultAsync(m => m.ToDoId == id);
             if (toDo == null)
             {

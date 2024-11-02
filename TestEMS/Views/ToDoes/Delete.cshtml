@@ -12,6 +12,12 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ToDoId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ToDoId)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
@@ -51,7 +57,7 @@
             @Html.DisplayNameFor(model => model.CreatedBy)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
+            @Html.DisplayFor(model => model.AddedByEmployeeData.Name)
         </dd>
     </dl>
     

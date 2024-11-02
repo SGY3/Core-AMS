@@ -14,14 +14,14 @@ namespace TestEMS.Utilities
         public async Task<string> GenerateToDoID()
         {
             var todoCount = await _context.ToDo.CountAsync();
-            var currentTime = DateTime.Now.ToString("yyyyMMddHHmm");
+            var currentTime = DateTime.Now.ToString("yyyyMMdd");
             var toDoId = $"T-{currentTime}-{todoCount + 1}";
             return toDoId;
         }
         public async Task<string> GenerateActivityID()
         {
             var todoCount = await _context.MyActivity.CountAsync();
-            var currentTime = DateTime.Now.ToString("yyyyMMddHHmm");
+            var currentTime = DateTime.Now.ToString("yyyyMMdd");
             var toDoId = $"A-{currentTime}-{todoCount + 1}";
             return toDoId;
         }

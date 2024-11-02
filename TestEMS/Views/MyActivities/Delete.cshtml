@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Project)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.IsActive)
+            @Html.DisplayFor(model => model.Project.ProjectName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ActivityType)
@@ -57,13 +57,13 @@
             @Html.DisplayNameFor(model => model.AssignedToEmployeeData)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedToEmployeeData.EmployeeId)
+            @Html.DisplayFor(model => model.AssignedToEmployeeData.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AssignedByEmployeeData)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssignedByEmployeeData.EmployeeId)
+            @Html.DisplayFor(model => model.AssignedByEmployeeData.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AssignedDate)

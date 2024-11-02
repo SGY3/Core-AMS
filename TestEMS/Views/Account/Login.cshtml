@@ -32,3 +32,10 @@
         @ViewData.ModelState[""].Errors[0].ErrorMessage
     </div>
 }
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
